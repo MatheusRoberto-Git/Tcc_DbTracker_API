@@ -2,6 +2,16 @@ using Tcc_DbTracker_API.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("A variável de ambiente 'DB_CONNECTION_STRING' não está configurada.");
+}
+
+builder.Configuration["ConnectionStrings:DefaultConnection"] = connectionString;
+
+
 // Add services to the container.
 builder.Services.AddScoped<Conn_SqlServer>();
 builder.Services.AddControllers();
