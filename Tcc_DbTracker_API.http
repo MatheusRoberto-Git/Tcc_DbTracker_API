@@ -1,6 +1,0 @@
-@Tcc_DbTracker_API_HostAddress = http://localhost:5246
-
-GET {{Tcc_DbTracker_API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

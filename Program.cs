@@ -1,19 +1,24 @@
+using Tcc_DbTracker_API.Models;
 using Tcc_DbTracker_API.Repository;
+using Tcc_DbTracker_API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 if (string.IsNullOrEmpty(connectionString))
 {
-    throw new InvalidOperationException("A variável de ambiente 'DB_CONNECTION_STRING' não está configurada.");
+    throw new InvalidOperationException("A variável de ambiente 'DefaultConnection' não está configurada.");
 }
 
 builder.Configuration["ConnectionStrings:DefaultConnection"] = connectionString;
 
+builder.Services.Configure<EmailModel>(
+    builder.Configuration.GetSection("EmailModel"));
 
 // Add services to the container.
 builder.Services.AddScoped<Conn_SqlServer>();
+builder.Services.AddSingleton<EmailService>();
 builder.Services.AddControllers();
 
 // Swagger
